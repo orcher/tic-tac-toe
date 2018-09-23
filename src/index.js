@@ -29,21 +29,20 @@ class Board extends React.Component {
         };
     }
 
-    blink(i) {
-        const id = 's' + i;
+    blink(id, time, msize, esize) {
         let elem = document.getElementById(id);
         let size = 0;
         let big = false;
         let end = false;
-        let int = setInterval(frame, 1);
+        let int = setInterval(frame, time);
         function frame() {
             if (end) {
                 clearInterval(int);
             } else {
                 size += (big ? -1 : 1);
                 elem.style.fontSize = size + 'px';
-                if (size === 60) big = true;
-                if (big & size === 20) end = true;
+                if (size === msize) big = true;
+                if (big & size === esize) end = true;
             }
         }
     }
@@ -79,7 +78,8 @@ class Board extends React.Component {
                 squares: newSquares,
                 history: newHistory,
             });
-            this.blink(i);
+            const id = 's' + i;
+            this.blink(id, 1, 60, 40);
         }
     }
 
@@ -129,9 +129,22 @@ class Board extends React.Component {
                         winner: squares[a],
                         winningSet: checks[i],
                     });
+                this.blink("info", 3, 30, 20);
                 break;
             }
         }
+    }
+
+    renderInfo() {
+        return (
+            <td id="info">
+                {
+                    this.state.winner === null ?
+                    ('Now moves: ' + (this.state.xMoves ? 'X' : 'O')) :
+                    ('Winner is: ' + this.state.winner + '!')
+                }
+            </td>
+            );
     }
 
     render() {
@@ -141,12 +154,7 @@ class Board extends React.Component {
                     <table className='board-header'>
                         <tbody>
                             <tr>
-                                <td>
-                                    {this.state.winner === null ?
-                                        ('Now moves: ' + (this.state.xMoves ? 'X' : 'O')) :
-                                        ('Winner is: ' + this.state.winner + '!')
-                                    }
-                                </td>
+                                {this.renderInfo()}
                             </tr>
                         </tbody>
                     </table>

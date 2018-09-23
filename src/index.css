@@ -9,6 +9,7 @@ table.board-header {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
+    width: 200px;
 }
 
 table.board-table {
