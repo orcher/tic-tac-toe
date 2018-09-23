@@ -129,7 +129,7 @@ class Board extends React.Component {
                         winner: squares[a],
                         winningSet: checks[i],
                     });
-                this.blink("info", 3, 30, 20);
+                this.blink("info", 10, 35, 30);
                 break;
             }
         }
@@ -179,12 +179,12 @@ class Board extends React.Component {
                     </table>
                 </div>
                 <div id="right">
-                    <table className="board-header">
+                    <table className="history-header">
                         <tbody>
                             <tr>
                                 <td>
                                     History:
-              </td>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
