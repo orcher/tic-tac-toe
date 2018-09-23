@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
-  render () {
-    return (
-      <td id={this.props.id} className='board-field' onClick={() => this.props.onClick()}>
+    render() {
+        console.log(this.props.color);
+        return (
+            <td
+                id={this.props.id}
+                className={this.props.color ? 'board-field-red' : 'board-field'}
+            onClick={() => this.props.onClick()}
+        >
         {this.props.value}
       </td>
     );
@@ -19,7 +24,8 @@ class Board extends React.Component {
       xMoves: true,
       squares: Array(9).fill(null),
       history: [],
-      winner: null,
+        winner: null,
+      winningSet: [],
     };
   }
 
@@ -78,13 +84,23 @@ class Board extends React.Component {
   }
 
   renderSquare(i) {
-    const id = 's' + i;
+      const id = 's' + i;
+      let c = false;
+      if (this.state.winner != null) {
+          for (let n = 0; n < this.state.winningSet.length; n++) {
+              if (this.state.winningSet[n] === i) {
+                  c = true;
+                  break;
+              }
+          }
+      }
     return (
-      <Square
-        id={id}
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
-      />
+        <Square
+            color={c}
+            id={id}
+            value={this.state.squares[i]}
+            onClick={() => this.handleClick(i)}
+        />
     );
   }
 
@@ -108,7 +124,11 @@ class Board extends React.Component {
         squares[a] === squares[c] &
         squares[b] === squares[c] &
         squares[a] != null){
-        this.setState({winner: squares[a]});
+          this.setState(
+              {
+                  winner: squares[a],
+                  winningSet: checks[i],
+              });
         break;
       }
     }
